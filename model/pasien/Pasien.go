@@ -28,6 +28,7 @@ func InsertPasien(ID int, head *entities.Pasien) {
 		}
 	}
 }
-func InsertDataPasien(ID int, head *entities.Pasien) {
-
+func InsertDataPasien(ID int, head *entities.Pasien, input entities.Pasien) {
+	target := search(ID, head)
+	*target = input
 }
