@@ -12,9 +12,9 @@ type NodePasien struct {
 	Tail *entities.Pasien
 }
 
-func (ll *NodePasien) SearchPasien(target int) *entities.Pasien {
+func (pl *NodePasien) SearchPasien(target int) *entities.Pasien {
 	fmt.Println("search")
-	temp := ll.Head
+	temp := pl.Head
 	for temp != nil {
 		fmt.Println("loop")
 		if temp.ID == target {
@@ -25,61 +25,64 @@ func (ll *NodePasien) SearchPasien(target int) *entities.Pasien {
 	return nil
 }
 
-func (ll *NodePasien) InsertPasien(ID int) {
+func (pl *NodePasien) InsertPasien(pasien *entities.Pasien) {
 	fmt.Println("InsertPasien start!!!")
-	temp := new(entities.Pasien)
-	temp.ID = ID
-	temp.Next = nil
-	// fmt.Println(temp)
-	if ll.Head == nil {
+	if pl.Head == nil {
 		fmt.Println("first")
-		ll.Head = temp
-		ll.Tail = temp
+		pl.Head = pasien
+		pl.Tail = pasien
 	} else {
 		fmt.Println("NOTfirst")
-		ll.Tail.Next = temp
-		ll.Tail = temp
-		fmt.Println(ll.Head.ID, ll.Head.Next.ID)
+		pl.Tail.Next = pasien
+		pl.Tail = pasien
+		fmt.Println(pl.Head.ID, pl.Head.Next.ID)
 	}
 }
 
-func (ll *NodePasien) DeletePasien(target int) {
+func (pl *NodePasien) DeletePasien(target int) bool {
 	fmt.Println("DeletePasien")
-	if ll.Head == nil {
+	if pl.Head == nil {
 		fmt.Println("1")
-		return
+		return false
 	}
-	if ll.Head.ID == target {
+	if pl.Head.ID == target {
 		fmt.Println("2")
-		fmt.Println(ll.Head.ID)
-		ll.Head = ll.Head.Next
-		fmt.Println(ll.Head.ID)
-		return
+		fmt.Println(pl.Head.ID)
+		pl.Head = pl.Head.Next
+		fmt.Println(pl.Head.ID)
+		return true
 	}
 	fmt.Println("3")
-	temp := ll.Head
+	temp := pl.Head
 	for temp.Next != nil {
 		fmt.Println("loop")
 		if temp.Next.ID == target {
 			fmt.Println("found")
 			temp.Next = temp.Next.Next
-			return
+			return true
 		}
 		temp = temp.Next
 	}
+	return false
 }
 
-func (ll *NodePasien) EditPasien(target int, a int) {
-	temp := ll.SearchPasien(target)
-	if temp != nil {
-		temp.ID = a
-		return
+func (pl *NodePasien) UpdatePasien(target int, update *entities.Pasien) bool {
+	current := pl.Head
+	for current != nil {
+		if current.ID == target {
+			current.Nama = update.Nama
+			current.Tlp = update.Tlp
+			current.Kondisi = update.Kondisi
+			current.Riwayat = update.Riwayat
+			return true
+		}
 	}
 	fmt.Println("Not Found")
+	return false
 }
 
-func (ll *NodePasien) ListPasien() {
-	temp := ll.Head
+func (pl *NodePasien) ListPasien() {
+	temp := pl.Head
 	for temp != nil {
 		print(temp.ID, "->")
 		temp = temp.Next
